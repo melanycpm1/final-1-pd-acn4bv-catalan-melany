@@ -36,78 +36,24 @@ app.get("/", (req, res) => {
   res.send("Backend Wikison funcionando 🚀");
 });
 
-// ENDPOINTS
+//routes
 
-// PERSONAJES
-app.get('/api/personajes', async (req, res) => {
-  try {
-    const snapshot = await db.collection('personajes').get();
-    const personajes = snapshot.docs.map(doc => doc.data());
-    res.json(personajes);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+const personajesRoutes = require('./routes/personajes.routes');
+const lugaresRoutes = require('./routes/lugares.routes');
+const peliculasRoutes = require('./routes/peliculas.routes');
+const temporadasRoutes = require('./routes/temporadas.routes');
+const creadoresRoutes = require('./routes/creadores.routes');
 
-app.post('/api/personajes', validarPersonaje, async (req, res) => {
-  try {
-    const nuevo = req.body;
-    const personajesRef = db.collection('personajes');
-    await personajesRef.doc(nuevo.nombre).set(nuevo); // nombre como ID
-    res.json({ mensaje: "Personaje agregado correctamente", data: nuevo });
-  } catch (error) {
-    console.error("Error agregando personaje:", error);
-    res.status(500).json({ error: "Error al agregar personaje" });
-  }
-});
 
-// LUGARES
-app.get('/api/lugares', async (req, res) => {
-  try {
-    const snapshot = await db.collection('lugares').get();
-    const lugares = snapshot.docs.map(doc => doc.data());
-    res.json(lugares);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// TEMPORADAS
-app.get('/api/temporadas', async (req, res) => {
-  try {
-    const snapshot = await db.collection('temporadas').get();
-    const temporadas = snapshot.docs.map(doc => doc.data());
-    res.json(temporadas);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// PELICULAS
-app.get('/api/peliculas', async (req, res) => {
-  try {
-    const doc = await db.collection('peliculas').doc('principal').get();
-    if (!doc.exists) return res.status(404).json({ error: "No hay película" });
-    res.json(doc.data());
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// CREADORES
-app.get('/api/creadores', async (req, res) => {
-  try {
-    const doc = await db.collection('creadores').doc('principal').get();
-    if (!doc.exists) return res.status(404).json({ error: "No hay creadores" });
-    res.json(doc.data());
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+app.use('/api/lugares', lugaresRoutes);
+app.use('/api/personajes', personajesRoutes);
+app.use('/api/temporadas', temporadasRoutes);
+app.use('/api/peliculas', peliculasRoutes);
+app.use('/api/creadores', creadoresRoutes);
 
 // Sincronización inicial (opcional)
 async function syncData() {
-  const fetch = require('node-fetch'); // si no lo tienes, instalar con npm i node-fetch
+  const fetch = require('node-fetch'); 
   try {
     const res = await fetch('https://api.npoint.io/0b93dfeea9f6f27cfd98');
     const data = await res.json();
