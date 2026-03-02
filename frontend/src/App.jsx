@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { fetchData } from './services/api';
-import PersonajeCard from './componentes/PersonajeCard';
-import LugarCard from './componentes/LugarCard';
-import TemporadaCard from './componentes/TemporadaCard';
-import Pelicula from './componentes/Pelicula';
-import Creadores from './componentes/Creadores';
+import React, { useEffect, useState } from "react";
+import { Routes, Route, Link } from "react-router-dom";
+import { fetchData } from "./services/api";
+
+import PersonajeCard from "./componentes/PersonajeCard";
+import LugarCard from "./componentes/LugarCard";
+import TemporadaCard from "./componentes/TemporadaCard";
+import Pelicula from "./componentes/Pelicula";
+import Creadores from "./componentes/Creadores";
 import FormPersonaje from "./componentes/FormPersonaje";
+
 import "./styles/style.css";
 
 function App() {
@@ -15,7 +18,7 @@ function App() {
   const [pelicula, setPelicula] = useState(null);
   const [creadores, setCreadores] = useState(null);
 
-
+  // Personajes desde backend
   const fetchPersonajes = async () => {
     try {
       const res = await fetch("http://localhost:3000/api/personajes");
@@ -26,11 +29,10 @@ function App() {
     }
   };
 
-
+  //  Datos generales
   useEffect(() => {
     async function cargarDatos() {
       const data = await fetchData();
-      setPersonajes(data.personajes || []);
       setLugares(data.lugares || []);
       setTemporadas(data.temporadas || []);
       setPelicula(data.pelicula || null);
@@ -38,6 +40,7 @@ function App() {
     }
     cargarDatos();
   }, []);
+
   useEffect(() => {
     fetchPersonajes();
   }, []);
@@ -45,35 +48,92 @@ function App() {
   const handlePersonajeAgregado = (nuevo) => {
     setPersonajes([...personajes, nuevo]);
   };
+
   return (
     <div className="App">
-      <h2 className='text-center'>Agregar Personaje</h2>
-      <FormPersonaje onPersonajeAgregado={handlePersonajeAgregado} />
 
-      <h1 className="text-center">Personajes</h1>
-      <div id="contenedorPersonajes">
-        {personajes.map(p => <PersonajeCard key={p.nombre} personaje={p} />)}
-      </div>
+      {/* NAVBAR (mismos colores que antes) */}
+      <nav className="navbar">
+        <Link to="/">Personajes</Link>{" "}
+        <Link to="/temporadas">Temporadas</Link>{" "}
+        <Link to="/lugares">Lugares</Link>{" "}
+        <Link to="/pelicula">Película</Link>{" "}
+        <Link to="/creadores">Creadores</Link>
+      </nav>
 
-      <h1 className="text-center">Lugares</h1>
-      <div id="contenedorLugares">
-        {lugares.map(l => <LugarCard key={l.nombre} lugar={l} />)}
-      </div>
+      <Routes>
 
-      <h1 className="text-center">Temporadas</h1>
-      <div id="contenedorTemporadas">
-        {temporadas.map(t => <TemporadaCard key={t.temporada} temporada={t} />)}
-      </div>
+        {/* PERSONAJES */}
+        <Route
+          path="/"
+          element={
+            <>
+              <h2 className="text-center">Agregar Personaje</h2>
+              <FormPersonaje onPersonajeAgregado={handlePersonajeAgregado} />
 
-      <h1 className="text-center">Película</h1>
-      <div id="contenedorPelicula">
-        <Pelicula pelicula={pelicula} />
-      </div>
+              <h1 className="text-center">Personajes</h1>
+              <div id="contenedorPersonajes">
+                {personajes.map((p) => (
+                  <PersonajeCard key={p.nombre} personaje={p} />
+                ))}
+              </div>
+            </>
+          }
+        />
 
-      <h1 className="text-center">Creadores</h1>
-      <div id="contenedorCreadores">
-        <Creadores creadores={creadores} />
-      </div>
+        {/* TEMPORADAS */}
+        <Route
+          path="/temporadas"
+          element={
+            <>
+              <h1 className="text-center">Temporadas</h1>
+              <div id="contenedorTemporadas">
+                {temporadas.map((t) => (
+                  <TemporadaCard key={t.temporada} temporada={t} />
+                ))}
+              </div>
+            </>
+          }
+        />
+
+        {/* LUGARES */}
+        <Route
+          path="/lugares"
+          element={
+            <>
+              <h1 className="text-center">Lugares</h1>
+              <div id="contenedorLugares">
+                {lugares.map((l) => (
+                  <LugarCard key={l.nombre} lugar={l} />
+                ))}
+              </div>
+            </>
+          }
+        />
+
+        {/* PELÍCULA */}
+        <Route
+          path="/pelicula"
+          element={
+            <>
+              <h1 className="text-center">Película</h1>
+              <Pelicula pelicula={pelicula} />
+            </>
+          }
+        />
+
+        {/* CREADORES */}
+        <Route
+          path="/creadores"
+          element={
+            <>
+              <h1 className="text-center">Creadores</h1>
+              <Creadores creadores={creadores} />
+            </>
+          }
+        />
+
+      </Routes>
     </div>
   );
 }
