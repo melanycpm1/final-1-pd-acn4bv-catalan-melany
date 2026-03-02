@@ -22,14 +22,6 @@ admin.initializeApp({
 const { getFirestore } = require("firebase-admin/firestore");
 const db = getFirestore();
 
-// Middleware propio de validación simple
-function validarPersonaje(req, res, next) {
-  const { nombre, rol, caracteristica, img } = req.body;
-  if (!nombre || !rol || !caracteristica || !img) {
-    return res.status(400).json({ error: "Todos los campos obligatorios deben completarse" });
-  }
-  next();
-}
 
 // Rutas básicas
 app.get("/", (req, res) => {

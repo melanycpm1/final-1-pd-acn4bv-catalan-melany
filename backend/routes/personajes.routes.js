@@ -26,6 +26,22 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /api/personajes/:id
+router.get('/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const doc = await db.collection('personajes').doc(id).get();
+
+    if (!doc.exists) {
+      return res.status(404).json({ error: "Personaje no encontrado" });
+    }
+
+    res.json(doc.data());
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // POST /api/personajes
 router.post('/', validarPersonaje, async (req, res) => {
   try {
