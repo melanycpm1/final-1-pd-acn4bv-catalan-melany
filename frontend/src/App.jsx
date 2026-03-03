@@ -8,6 +8,7 @@ import TemporadaCard from "./componentes/TemporadaCard";
 import Pelicula from "./componentes/Pelicula";
 import Creadores from "./componentes/Creadores";
 import FormPersonaje from "./componentes/FormPersonaje";
+import PersonajeDetalle from "./componentes/PersonajeDetalle";
 
 import "./styles/style.css";
 
@@ -60,80 +61,80 @@ function App() {
         <Link to="/pelicula">Película</Link>{" "}
         <Link to="/creadores">Creadores</Link>
       </nav>
+<Routes>
+  {/* PERSONAJES */}
+  <Route
+    path="/"
+    element={
+      <>
+        <h2 className="text-center">Agregar Personaje</h2>
+        <FormPersonaje onPersonajeAgregado={handlePersonajeAgregado} />
 
-      <Routes>
+        <h1 className="text-center">Personajes</h1>
+        <div id="contenedorPersonajes">
+          {personajes.map((p) => (
+            <PersonajeCard key={p.nombre} personaje={p} />
+          ))}
+        </div>
+      </>
+    }
+  />
 
-        {/* PERSONAJES */}
-        <Route
-          path="/"
-          element={
-            <>
-              <h2 className="text-center">Agregar Personaje</h2>
-              <FormPersonaje onPersonajeAgregado={handlePersonajeAgregado} />
+  {/* DETALLE PERSONAJE */}
+  <Route path="/personajes/:id" element={<PersonajeDetalle />} />
 
-              <h1 className="text-center">Personajes</h1>
-              <div id="contenedorPersonajes">
-                {personajes.map((p) => (
-                  <PersonajeCard key={p.nombre} personaje={p} />
-                ))}
-              </div>
-            </>
-          }
-        />
+  {/* TEMPORADAS */}
+  <Route
+    path="/temporadas"
+    element={
+      <>
+        <h1 className="text-center">Temporadas</h1>
+        <div id="contenedorTemporadas">
+          {temporadas.map((t) => (
+            <TemporadaCard key={t.temporada} temporada={t} />
+          ))}
+        </div>
+      </>
+    }
+  />
 
-        {/* TEMPORADAS */}
-        <Route
-          path="/temporadas"
-          element={
-            <>
-              <h1 className="text-center">Temporadas</h1>
-              <div id="contenedorTemporadas">
-                {temporadas.map((t) => (
-                  <TemporadaCard key={t.temporada} temporada={t} />
-                ))}
-              </div>
-            </>
-          }
-        />
+  {/* LUGARES */}
+  <Route
+    path="/lugares"
+    element={
+      <>
+        <h1 className="text-center">Lugares</h1>
+        <div id="contenedorLugares">
+          {lugares.map((l) => (
+            <LugarCard key={l.nombre} lugar={l} />
+          ))}
+        </div>
+      </>
+    }
+  />
 
-        {/* LUGARES */}
-        <Route
-          path="/lugares"
-          element={
-            <>
-              <h1 className="text-center">Lugares</h1>
-              <div id="contenedorLugares">
-                {lugares.map((l) => (
-                  <LugarCard key={l.nombre} lugar={l} />
-                ))}
-              </div>
-            </>
-          }
-        />
+  {/* PELÍCULA */}
+  <Route
+    path="/pelicula"
+    element={
+      <>
+        <h1 className="text-center">Película</h1>
+        <Pelicula pelicula={pelicula} />
+      </>
+    }
+  />
 
-        {/* PELÍCULA */}
-        <Route
-          path="/pelicula"
-          element={
-            <>
-              <h1 className="text-center">Película</h1>
-              <Pelicula pelicula={pelicula} />
-            </>
-          }
-        />
-
-        {/* CREADORES */}
-        <Route
-          path="/creadores"
-          element={
-            <>
-              <h1 className="text-center">Creadores</h1>
-              <Creadores creadores={creadores} />
-            </>
-          }
-        />
-
-      </Routes>
+  {/* CREADORES */}
+  <Route
+    path="/creadores"
+    element={
+      <>
+        <h1 className="text-center">Creadores</h1>
+        <Creadores creadores={creadores} />
+      </>
+    }
+  />
+</Routes>
     </div>
   );
 }

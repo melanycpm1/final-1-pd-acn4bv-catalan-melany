@@ -143,22 +143,28 @@ body {
 
 /*  Lugares */
 #contenedorLugares {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-    justify-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
 }
+
 
 .lugar-card {
     background-color: #fff;
     border: 2px solid #ffcc00;
     border-radius: 10px;
     padding: 10px;
-    width: 90%;
+    width: 250px;
+    height: 250px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: 0.3s;
 }
-
+.img-lugar{
+    width: 100%;         
+    height: 70%;        
+    object-fit: cover;
+}
 .lugar-card:hover {
     transform: scale(1.03);
 }
@@ -169,6 +175,14 @@ body {
 }
 
 /* Temporadas */
+#contenedorTemporadas{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+.temporada-card{
+    width: 500px;
+}
 #contenedorTemporadas div {
     background: #fff;
     border-left: 6px solid #004aad;
