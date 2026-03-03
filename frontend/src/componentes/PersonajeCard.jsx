@@ -21,7 +21,7 @@ const PersonajeCard = ({ personaje, onEliminar  }) => {
                     src={personaje.img}
                     alt={personaje.nombre}
                     className="card-img-top"
-                    style={{ height: "250px", objectFit: "cover" }}
+                    style={{ height: "250px", objectFit: "cover", objectPosition: "top" }}
                 />
                 <div className="card-body">
                     <h5 className="card-title">{personaje.nombre}</h5>
