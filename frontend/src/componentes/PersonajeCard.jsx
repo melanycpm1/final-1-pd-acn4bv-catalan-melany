@@ -3,17 +3,20 @@ import { Link } from "react-router-dom";
 
 const PersonajeCard = ({ personaje }) => {
     return (
-        <Link to={`/personajes/${encodeURIComponent(personaje.nombre)}`}>
-            <div className="personaje-card">
-                <div className="cntdor-img">
-                    <img src={personaje.img} alt={personaje.nombre} className="img-personaje" />
-                </div>
-                <div className="cntendor_info-personajes">
-                    <h3>{personaje.nombre}</h3>
-                    <p><strong>Rol:</strong> {personaje.rol}</p>
-                    <p><strong>Característica:</strong> {personaje.caracteristica}</p>
+        <Link to={`/personajes/${encodeURIComponent(personaje.nombre)}`} className="text-decoration-none text-dark">
+            <div className="card h-100 shadow-sm">
+                <img
+                    src={personaje.img}
+                    alt={personaje.nombre}
+                    className="card-img-top"
+                    style={{ height: "250px", objectFit: "cover" }}
+                />
+                <div className="card-body">
+                    <h5 className="card-title">{personaje.nombre}</h5>
+                    <p className="card-text"><strong>Rol:</strong> {personaje.rol}</p>
+                    <p className="card-text"><strong>Característica:</strong> {personaje.caracteristica}</p>
                     {personaje.frases && personaje.frases.length > 0 && (
-                        <p><strong>Frases:</strong> {personaje.frases.join(', ')}</p>
+                        <p className="card-text"><strong>Frases:</strong> {personaje.frases.join(', ')}</p>
                     )}
                 </div>
             </div>

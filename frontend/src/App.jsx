@@ -10,7 +10,7 @@ import Creadores from "./componentes/Creadores";
 import FormPersonaje from "./componentes/FormPersonaje";
 import PersonajeDetalle from "./componentes/PersonajeDetalle";
 
-import "./styles/style.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const [personajes, setPersonajes] = useState([]);
@@ -21,7 +21,6 @@ function App() {
   const [busquedaTemporada, setBusquedaTemporada] = useState("");
   const [busquedaPersonaje, setBusquedaPersonaje] = useState("");
 
-  // Personajes desde backend
   const fetchPersonajes = async () => {
     try {
       const res = await fetch("http://localhost:3000/api/personajes");
@@ -32,7 +31,6 @@ function App() {
     }
   };
 
-  //  Datos generales
   useEffect(() => {
     async function cargarDatos() {
       const data = await fetchData();
@@ -53,114 +51,114 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className="App container my-4 ">
 
-      {/* NAVBAR (mismos colores que antes) */}
-      <nav className="navbar">
-        <Link to="/">Personajes</Link>{" "}
-        <Link to="/temporadas">Temporadas</Link>{" "}
-        <Link to="/lugares">Lugares</Link>{" "}
-        <Link to="/pelicula">Película</Link>{" "}
-        <Link to="/creadores">Creadores</Link>
+      {/* NAVBAR */}
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4 rounded">
+        <div className="container-fluid">
+          <Link className="navbar-brand" to="/">Wikison</Link>
+          <div className="collapse navbar-collapse">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item"><Link className="nav-link" to="/">Personajes</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/temporadas">Temporadas</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/lugares">Lugares</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/pelicula">Película</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/creadores">Creadores</Link></li>
+            </ul>
+          </div>
+        </div>
       </nav>
-<Routes>
-  {/* PERSONAJES */}
-  <Route
-    path="/"
-    element={
-      <>
-      <div className="buscador-personajes">
-        <input
-          type="text"
-          placeholder="Buscar personaje..."
-          value={busquedaPersonaje}
-          onChange={(e) => setBusquedaPersonaje(e.target.value)}
-        />
-      </div>
-        <h2 className="text-center">Agregar Personaje</h2>
-        <FormPersonaje onPersonajeAgregado={handlePersonajeAgregado} />
 
-        <h1 className="text-center">Personajes</h1>
-        <div id="contenedorPersonajes">
-          {personajes
-            .filter(p =>
-              p.nombre.toLowerCase().includes(busquedaPersonaje.toLowerCase())
-            )
-            .map((p) => (
-              <PersonajeCard key={p.nombre} personaje={p} />
-            ))
-          }
-        </div>
-      </>
-    }
-  />
+      <Routes>
+        {/* PERSONAJES */}
+        <Route path="/" element={
+          <>
+            <div className="mb-3">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Buscar personaje..."
+                value={busquedaPersonaje}
+                onChange={(e) => setBusquedaPersonaje(e.target.value)}
+              />
+            </div>
 
-  {/* DETALLE PERSONAJE */}
-  <Route path="/personajes/:id" element={<PersonajeDetalle />} />
+            <h2 className="text-center mb-3">Agregar Personaje</h2>
+            <FormPersonaje onPersonajeAgregado={handlePersonajeAgregado} />
 
-  {/* TEMPORADAS */}
-  <Route
-    path="/temporadas"
-    element={
-      <>
-      <div className="buscador-temporadas">
-        <input
-          type="text"
-          placeholder="Ingrese numero de temporada..."
-          value={busquedaTemporada}
-          onChange={(e) => setBusquedaTemporada(e.target.value)}
-          />
-      </div>
-        <h1 className="text-center">Temporadas</h1>
-        <div id="contenedorTemporadas">
-          {temporadas
-          .filter(t => t.temporada.toString().includes(busquedaTemporada))
-          .map((t) => (
-            <TemporadaCard key={t.temporada} temporada={t} />
-          ))
-          }
-      </div>
-      </>
-    }
-  />
+            <h1 className="text-center my-4">Personajes</h1>
+            <div className="row g-3">
+              {personajes
+                .filter(p => p.nombre.toLowerCase().includes(busquedaPersonaje.toLowerCase()))
+                .map((p) => (
+                  <div className="col-md-4 col-sm-6" key={p.nombre}>
+                    <PersonajeCard personaje={p} />
+                  </div>
+                ))
+              }
+            </div>
+          </>
+        }/>
 
-  {/* LUGARES */}
-  <Route
-    path="/lugares"
-    element={
-      <>
-        <h1 className="text-center">Lugares</h1>
-        <div id="contenedorLugares">
-          {lugares.map((l) => (
-            <LugarCard key={l.nombre} lugar={l} />
-          ))}
-        </div>
-      </>
-    }
-  />
+        {/* DETALLE PERSONAJE */}
+        <Route path="/personajes/:id" element={<PersonajeDetalle />} />
 
-  {/* PELÍCULA */}
-  <Route
-    path="/pelicula"
-    element={
-      <>
-        <h1 className="text-center">Película</h1>
-        <Pelicula pelicula={pelicula} />
-      </>
-    }
-  />
+        {/* TEMPORADAS */}
+        <Route path="/temporadas" element={
+          <>
+            <div className="mb-3">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Buscar temporada..."
+                value={busquedaTemporada}
+                onChange={(e) => setBusquedaTemporada(e.target.value)}
+              />
+            </div>
 
-  {/* CREADORES */}
-  <Route
-    path="/creadores"
-    element={
-      <>
-        <h1 className="text-center">Creadores</h1>
-        <Creadores creadores={creadores} />
-      </>
-    }
-  />
-</Routes>
+            <h1 className="text-center my-4">Temporadas</h1>
+            <div className="row g-3">
+              {temporadas
+                .filter(t => t.temporada.toString().includes(busquedaTemporada))
+                .map((t) => (
+                  <div className="col-md-4 col-sm-6" key={t.temporada}>
+                    <TemporadaCard temporada={t} />
+                  </div>
+                ))}
+            </div>
+          </>
+        }/>
+
+        {/* LUGARES */}
+        <Route path="/lugares" element={
+          <>
+            <h1 className="text-center my-4">Lugares</h1>
+            <div className="row g-3">
+              {lugares.map(l => (
+                <div className="col-md-4 col-sm-6" key={l.nombre}>
+                  <LugarCard lugar={l} />
+                </div>
+              ))}
+            </div>
+          </>
+        }/>
+
+        {/* PELÍCULA */}
+        <Route path="/pelicula" element={
+          <>
+            <h1 className="text-center my-4">Película</h1>
+            <Pelicula pelicula={pelicula} />
+          </>
+        }/>
+
+        {/* CREADORES */}
+        <Route path="/creadores" element={
+          <>
+            <h1 className="text-center my-4">Creadores</h1>
+            <Creadores creadores={creadores} />
+          </>
+        }/>
+      </Routes>
     </div>
   );
 }
