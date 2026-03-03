@@ -18,6 +18,8 @@ function App() {
   const [temporadas, setTemporadas] = useState([]);
   const [pelicula, setPelicula] = useState(null);
   const [creadores, setCreadores] = useState(null);
+  const [busquedaTemporada, setBusquedaTemporada] = useState("");
+  const [busquedaPersonaje, setBusquedaPersonaje] = useState("");
 
   // Personajes desde backend
   const fetchPersonajes = async () => {
@@ -67,14 +69,27 @@ function App() {
     path="/"
     element={
       <>
+      <div className="buscador-personajes">
+        <input
+          type="text"
+          placeholder="Buscar personaje..."
+          value={busquedaPersonaje}
+          onChange={(e) => setBusquedaPersonaje(e.target.value)}
+        />
+      </div>
         <h2 className="text-center">Agregar Personaje</h2>
         <FormPersonaje onPersonajeAgregado={handlePersonajeAgregado} />
 
         <h1 className="text-center">Personajes</h1>
         <div id="contenedorPersonajes">
-          {personajes.map((p) => (
-            <PersonajeCard key={p.nombre} personaje={p} />
-          ))}
+          {personajes
+            .filter(p =>
+              p.nombre.toLowerCase().includes(busquedaPersonaje.toLowerCase())
+            )
+            .map((p) => (
+              <PersonajeCard key={p.nombre} personaje={p} />
+            ))
+          }
         </div>
       </>
     }
@@ -88,12 +103,23 @@ function App() {
     path="/temporadas"
     element={
       <>
+      <div className="buscador-temporadas">
+        <input
+          type="text"
+          placeholder="Ingrese numero de temporada..."
+          value={busquedaTemporada}
+          onChange={(e) => setBusquedaTemporada(e.target.value)}
+          />
+      </div>
         <h1 className="text-center">Temporadas</h1>
         <div id="contenedorTemporadas">
-          {temporadas.map((t) => (
+          {temporadas
+          .filter(t => t.temporada.toString().includes(busquedaTemporada))
+          .map((t) => (
             <TemporadaCard key={t.temporada} temporada={t} />
-          ))}
-        </div>
+          ))
+          }
+      </div>
       </>
     }
   />
