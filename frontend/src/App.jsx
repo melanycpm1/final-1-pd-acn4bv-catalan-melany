@@ -49,6 +49,19 @@ function App() {
   const handlePersonajeAgregado = (nuevo) => {
     setPersonajes([...personajes, nuevo]);
   };
+const handleEliminar = async (nombre) => {
+  try {
+    await fetch(`http://localhost:3000/api/personajes/${encodeURIComponent(nombre)}`, {
+      method: "DELETE",
+    });
+
+    setPersonajes(personajes.filter(p => p.nombre !== nombre));
+
+  } catch (error) {
+    console.error("Error eliminando:", error);
+  }
+};
+
 
   return (
     <div className="App container my-4 ">
@@ -92,7 +105,10 @@ function App() {
                 .filter(p => p.nombre.toLowerCase().includes(busquedaPersonaje.toLowerCase()))
                 .map((p) => (
                   <div className="col-md-4 col-sm-6" key={p.nombre}>
-                    <PersonajeCard personaje={p} />
+                    <PersonajeCard 
+                          personaje={p} 
+                          onEliminar={handleEliminar}
+                        />
                   </div>
                 ))
               }

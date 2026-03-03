@@ -56,4 +56,25 @@ router.post('/', validarPersonaje, async (req, res) => {
   }
 });
 
+
+router.put('/:id', async (req, res) => {
+  try {
+    await db.collection('personajes')
+      .doc(req.params.id)
+      .update(req.body);
+
+    res.json({ mensaje: "Personaje actualizado correctamente" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.delete('/:id', async (req, res) => {
+  try {
+    await db.collection('personajes').doc(req.params.id).delete();
+    res.json({ mensaje: "Eliminado correctamente" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 module.exports = router;
